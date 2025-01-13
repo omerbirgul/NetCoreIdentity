@@ -22,6 +22,11 @@ namespace IdentityProject.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(RegisterViewModel request)
         {
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var result = await _registerService.RegisterAsync(request);
             if (result.Succeeded)
             {
@@ -33,7 +38,7 @@ namespace IdentityProject.Controllers
             {
                 ModelState.AddModelError("", error.Description);
             }
-            return BadRequest(ModelState);
+            return View();
         }
 
     }
