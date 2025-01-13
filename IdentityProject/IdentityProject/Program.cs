@@ -1,9 +1,11 @@
 using IdentityProject.Models;
 using IdentityProject.Services.RegisterServices;
+using IdentityProject.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IRegisterService, RegisterService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>
