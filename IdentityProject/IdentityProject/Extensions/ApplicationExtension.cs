@@ -1,4 +1,5 @@
-﻿using IdentityProject.Models;
+﻿using IdentityProject.CustomValidations;
+using IdentityProject.Models;
 using IdentityProject.Services.RegisterServices;
 using IdentityProject.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,9 @@ namespace IdentityProject.Extensions
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = true;
                 opt.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<AppDbContext>();
+            })
+                .AddPasswordValidator<PasswordValidator>()
+                .AddEntityFrameworkStores<AppDbContext>();
         }
     }
 }

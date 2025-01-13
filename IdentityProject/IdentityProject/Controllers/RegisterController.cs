@@ -1,5 +1,6 @@
 using IdentityProject.Services.RegisterServices;
 using IdentityProject.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityProject.Controllers
@@ -34,7 +35,7 @@ namespace IdentityProject.Controllers
                 return RedirectToAction(nameof(RegisterController.Index));
             }
 
-            foreach(var error in result.Errors)
+            foreach(IdentityError error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);
             }
