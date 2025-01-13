@@ -1,18 +1,16 @@
+using IdentityProject.Extensions;
 using IdentityProject.Models;
-using IdentityProject.Services.RegisterServices;
-using IdentityProject.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IRegisterService, RegisterService>();
-builder.Services.AddScoped<IUserService, UserService>();
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddCustomIdentity();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
