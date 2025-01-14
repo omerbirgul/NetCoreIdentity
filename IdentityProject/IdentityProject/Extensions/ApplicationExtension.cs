@@ -24,6 +24,7 @@ namespace IdentityProject.Extensions
                 opt.Password.RequireUppercase = false;
             })
                 .AddPasswordValidator<PasswordValidator>()
+                .AddUserValidator<UserValidator>()
                 .AddEntityFrameworkStores<AppDbContext>();
         }
     }
