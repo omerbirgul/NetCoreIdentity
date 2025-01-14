@@ -1,8 +1,10 @@
-﻿using IdentityProject.Models;
+﻿using IdentityProject.Extensions;
+using IdentityProject.Models;
 using IdentityProject.Services.LoginServices;
 using IdentityProject.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace IdentityProject.Controllers
 {
@@ -24,7 +26,7 @@ namespace IdentityProject.Controllers
         //    _loginService = loginService;
         //}
 
-        public IActionResult SingIn()
+        public IActionResult SignIn()
         {
             return View();
         }
@@ -40,15 +42,24 @@ namespace IdentityProject.Controllers
                 return View();
             }
 
-            var signInResult =  await _signInManager.PasswordSignInAsync(hasUser, request.Password, request.RememberMe, false);
+            var signInResult =  await _signInManager.PasswordSignInAsync(hasUser, request.Password, request.RememberMe, true);
+            
             if (signInResult.Succeeded)
             {
                 TempData["LoginSuccess"] = "User logged in successfully";
-                return RedirectToAction("Index", "Home");
+                return Redirect(returnUrl ?? "/");
             }
 
-            ModelState.AddModelError("", "Email or Password Wrong!");
+            if(signInResult.IsLockedOut)
+            {
+                ModelState.AddModelErrorList(new List<string> { "Your account has been locked out" });
+                return View();
+            }
+            
+            int accesFailedCount = await _userManager.GetAccessFailedCountAsync(hasUser);
+            ModelState.AddModelErrorList(new List<string> { "Email or Password Wrong!", $"Failed loggin attemp: {accesFailedCount}" });
             return View();
+            //return RedirectToAction("Index", "Home");
         }
     }
 }

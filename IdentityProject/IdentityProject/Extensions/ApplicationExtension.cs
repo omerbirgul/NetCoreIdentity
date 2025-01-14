@@ -19,11 +19,15 @@ namespace IdentityProject.Extensions
             {
                 opt.User.RequireUniqueEmail = true;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+
                 opt.Password.RequiredLength = 6;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = true;
                 opt.Password.RequireUppercase = false;
+
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                opt.Lockout.MaxFailedAccessAttempts = 3;
             })
                 .AddPasswordValidator<PasswordValidator>()
                 .AddUserValidator<UserValidator>()
