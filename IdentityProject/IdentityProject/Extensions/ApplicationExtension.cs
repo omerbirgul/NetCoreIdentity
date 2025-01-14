@@ -1,5 +1,6 @@
 ﻿using IdentityProject.CustomValidations;
 using IdentityProject.Models;
+using IdentityProject.Services.LoginServices;
 using IdentityProject.Services.RegisterServices;
 using IdentityProject.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace IdentityProject.Extensions
         {
             services.AddScoped<IRegisterService, RegisterService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILoginService, LoginService>();
 
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
