@@ -5,8 +5,7 @@ This project demonstrates how to use the .NET Core Identity API to build authent
 
 ## Table of Contents
 - [Features](#features)
-- [Getting Started](#getting-started)
-- [Technologies Used](#technologies-used)
+- [Topics Covered](#topics-covered)
 
 
 ## Features
