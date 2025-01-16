@@ -47,7 +47,7 @@ namespace IdentityProject.Controllers
             if (signInResult.Succeeded)
             {
                 TempData["LoginSuccess"] = "User logged in successfully";
-                return Redirect(returnUrl ?? "/");
+                return RedirectToAction("Index","Home");
             }
 
             if(signInResult.IsLockedOut)

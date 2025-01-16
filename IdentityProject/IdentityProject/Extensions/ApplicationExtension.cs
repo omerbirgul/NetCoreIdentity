@@ -15,6 +15,16 @@ namespace IdentityProject.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoginService, LoginService>();
 
+            services.ConfigureApplicationCookie(opt =>
+            {
+                var cookieBuilder = new CookieBuilder();
+                cookieBuilder.Name = "AppCookie";
+                opt.LoginPath = new PathString("/Login/SignIn");
+                opt.Cookie = cookieBuilder;
+                opt.ExpireTimeSpan = TimeSpan.FromDays(60);
+                opt.SlidingExpiration = true;
+            });
+
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
                 opt.User.RequireUniqueEmail = true;
