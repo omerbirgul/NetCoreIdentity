@@ -61,5 +61,11 @@ namespace IdentityProject.Controllers
             return View();
             //return RedirectToAction("Index", "Home");
         }
+
+
+        public async Task SignOut()
+        {
+            await _signInManager.SignOutAsync();
+        }
     }
 }

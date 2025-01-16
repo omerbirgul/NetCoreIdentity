@@ -1,7 +1,7 @@
 ﻿@if (User.Identity.IsAuthenticated)
 {
     <a class="btn btn-outline-info"> @User.Identity.Name</a>
-    <a class="btn btn-outline-danger" asp-controller="Login" asp-action="SignOut"> Logout</a>
+    <a class="btn btn-outline-danger" asp-route-returnurl="/Home/Index" asp-controller="Login" asp-action="SignOut"> Logout</a>
 }
 else
 {

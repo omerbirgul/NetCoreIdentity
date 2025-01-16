@@ -20,6 +20,7 @@ namespace IdentityProject.Extensions
                 var cookieBuilder = new CookieBuilder();
                 cookieBuilder.Name = "AppCookie";
                 opt.LoginPath = new PathString("/Login/SignIn");
+                opt.LogoutPath = new PathString("/Login/SignOut");
                 opt.Cookie = cookieBuilder;
                 opt.ExpireTimeSpan = TimeSpan.FromDays(60);
                 opt.SlidingExpiration = true;
