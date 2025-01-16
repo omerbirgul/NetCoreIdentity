@@ -1,6 +1,6 @@
 ﻿@model RegisterViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Register";
 }
 <h1>register page</h1>
 
@@ -15,7 +15,7 @@
 
 </div>
 
-<form asp-action="index" asp-controller="register" method="post">
+<form asp-action="Register" asp-controller="Home" method="post">
     <div class="form-group">
         <label for="UserName">Username:</label>
         <input type="text" class="form-control" asp-for="UserName">

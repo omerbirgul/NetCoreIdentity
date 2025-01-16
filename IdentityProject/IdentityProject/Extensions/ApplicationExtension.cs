@@ -19,12 +19,13 @@ namespace IdentityProject.Extensions
             {
                 var cookieBuilder = new CookieBuilder();
                 cookieBuilder.Name = "AppCookie";
-                opt.LoginPath = new PathString("/Login/SignIn");
-                opt.LogoutPath = new PathString("/Login/SignOut");
+                opt.LoginPath = new PathString("/Home/Signin");
+                opt.LogoutPath = new PathString("/Member/SignOut");
                 opt.Cookie = cookieBuilder;
                 opt.ExpireTimeSpan = TimeSpan.FromDays(60);
                 opt.SlidingExpiration = true;
             });
+
 
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
