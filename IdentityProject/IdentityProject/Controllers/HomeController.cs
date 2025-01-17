@@ -5,6 +5,7 @@ using IdentityProject.Extensions;
 using IdentityProject.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using IdentityProject.Services.RegisterServices;
+using System.Security.Policy;
 
 namespace IdentityProject.Controllers;
 
@@ -105,5 +106,28 @@ public class HomeController : Controller
             ModelState.AddModelError("", error.Description);
         }
         return View();
+    }
+
+
+    public IActionResult ForgetPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel model)
+    {
+        var hasUser = await _userManager.FindByEmailAsync(model.Email);
+        if(hasUser is null)
+        {
+            ModelState.AddModelError(string.Empty, "Email not found!");
+            return View();
+        }
+
+        string resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
+        var passwordResetLink = Url.Action("ResetPassword", "Home", new {userId = hasUser.Id, Token = resetPasswordToken});
+
+        TempData["SuccessMessage"] = "Reset password link has been sent to your email address";
+        return RedirectToAction(nameof(HomeController.ForgetPassword));
     }
 }

@@ -3,6 +3,7 @@ using IdentityProject.Models;
 using IdentityProject.Services.LoginServices;
 using IdentityProject.Services.RegisterServices;
 using IdentityProject.Services.UserServices;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityProject.Extensions
@@ -11,6 +12,14 @@ namespace IdentityProject.Extensions
     {
         public static void AddCustomIdentity(this IServiceCollection services)
         {
+
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+            {
+                opt.TokenLifespan = TimeSpan.FromMinutes(3);
+            });
+
+
+
             services.AddScoped<IRegisterService, RegisterService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoginService, LoginService>();
@@ -41,8 +50,9 @@ namespace IdentityProject.Extensions
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
                 opt.Lockout.MaxFailedAccessAttempts = 3;
             })
-                .AddPasswordValidator<PasswordValidator>()
-                .AddUserValidator<UserValidator>()
+                .AddPasswordValidator<PasswordValidator>() // Password validasyon için
+                .AddUserValidator<UserValidator>()         // User validasyon için
+                .AddDefaultTokenProviders()                // Token ekleyip kullanmak için
                 .AddEntityFrameworkStores<AppDbContext>();
         }
     }
