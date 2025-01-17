@@ -6,6 +6,7 @@ using IdentityProject.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using IdentityProject.Services.RegisterServices;
 using System.Security.Policy;
+using IdentityProject.Services.EmailServices;
 
 namespace IdentityProject.Controllers;
 
@@ -15,12 +16,14 @@ public class HomeController : Controller
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly IRegisterService _registerService;
+    private readonly IEmailService _emailService;
 
-    public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IRegisterService registerService)
+    public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IRegisterService registerService, IEmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _registerService = registerService;
+        _emailService = emailService;
     }
 
 
@@ -125,7 +128,10 @@ public class HomeController : Controller
         }
 
         string resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
-        var passwordResetLink = Url.Action("ResetPassword", "Home", new {userId = hasUser.Id, Token = resetPasswordToken});
+        var passwordResetLink = Url
+            .Action("ResetPassword", "Home", new {userId = hasUser.Id, Token = resetPasswordToken}, HttpContext.Request.Scheme, "localhost");
+
+        await _emailService.SendResetEmailAsync(passwordResetLink, hasUser.Email);
 
         TempData["SuccessMessage"] = "Reset password link has been sent to your email address";
         return RedirectToAction(nameof(HomeController.ForgetPassword));

@@ -1,5 +1,7 @@
 ﻿using IdentityProject.CustomValidations;
 using IdentityProject.Models;
+using IdentityProject.OptionModels;
+using IdentityProject.Services.EmailServices;
 using IdentityProject.Services.LoginServices;
 using IdentityProject.Services.RegisterServices;
 using IdentityProject.Services.UserServices;
@@ -10,7 +12,7 @@ namespace IdentityProject.Extensions
 {
     public static class ApplicationExtension
     {
-        public static void AddCustomIdentity(this IServiceCollection services)
+        public static void AddCustomIdentity(this IServiceCollection services, IConfiguration configuration)
         {
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
@@ -19,10 +21,11 @@ namespace IdentityProject.Extensions
             });
 
 
-
+            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddScoped<IRegisterService, RegisterService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             services.ConfigureApplicationCookie(opt =>
             {

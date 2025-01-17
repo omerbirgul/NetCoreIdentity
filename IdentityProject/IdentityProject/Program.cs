@@ -13,7 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 
 
-builder.Services.AddCustomIdentity();
+builder.Services.AddCustomIdentity(builder.Configuration);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
