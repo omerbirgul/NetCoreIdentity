@@ -6,6 +6,13 @@
 
 <h1>SingIn</h1>
 
+@if (TempData["ResetPasswordSuccess"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["ResetPasswordSuccess"]
+    </div>
+}
+
 
 <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 

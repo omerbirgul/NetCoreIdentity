@@ -129,11 +129,47 @@ public class HomeController : Controller
 
         string resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
         var passwordResetLink = Url
-            .Action("ResetPassword", "Home", new {userId = hasUser.Id, Token = resetPasswordToken}, HttpContext.Request.Scheme, "localhost");
+            .Action("ResetPassword", "Home", new {userId = hasUser.Id, Token = resetPasswordToken}, HttpContext.Request.Scheme);
 
         await _emailService.SendResetEmailAsync(passwordResetLink, hasUser.Email);
 
         TempData["SuccessMessage"] = "Reset password link has been sent to your email address";
         return RedirectToAction(nameof(HomeController.ForgetPassword));
+    }
+
+
+    public IActionResult ResetPassword(string userId, string token)
+    {
+        TempData["UserId"] = userId;
+        TempData["Token"] = token;
+        return View();
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request, string userId, string token)
+    {
+
+        if (userId is null || token is null)
+        {
+            ModelState.AddModelError(string.Empty, "Invalid reset password link!");
+            return View();
+        }
+
+        var hasUser = await _userManager.FindByIdAsync(userId);
+        if(hasUser is null)
+        {
+            ModelState.AddModelError(string.Empty, "User not found!");
+            return View();
+        }
+
+        var IdentityResult = await _userManager.ResetPasswordAsync(hasUser, token, request.NewPassword);
+        if(IdentityResult.Succeeded)
+        {
+            TempData["ResetPasswordSuccess"] = "Password reset successfully!";
+            return RedirectToAction(nameof(HomeController.SignIn));
+        }
+        ModelState.AddModelErrorList(IdentityResult.Errors.Select(x => x.Description).ToList());
+        return View();
     }
 }
