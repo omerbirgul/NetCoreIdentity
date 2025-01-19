@@ -35,5 +35,11 @@ namespace IdentityProject.Controllers
         {
             await _signInManager.SignOutAsync();
         }
+
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
     }
 }

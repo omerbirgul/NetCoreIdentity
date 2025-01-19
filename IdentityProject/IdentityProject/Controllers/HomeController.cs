@@ -172,4 +172,7 @@ public class HomeController : Controller
         ModelState.AddModelErrorList(IdentityResult.Errors.Select(x => x.Description).ToList());
         return View();
     }
+
+
+   
 }
