@@ -1,5 +1,3 @@
-# ASP.NET Core MVC Identity Project
-
 ## Project Overview
 This project demonstrates how to use the .NET Core Identity API to build authentication and authorization features in an ASP.NET Core MVC application. It includes comprehensive examples of user and role management, external authentication, password management, credential storage, and customization of the Identity API.
 
